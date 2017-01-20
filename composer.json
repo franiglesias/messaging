@@ -1,0 +1,26 @@
+{
+    "name": "milhojas/messaging",
+    "description": "A Messaging component for apps, with CommandBus, EventBus and QueryBus",
+    "type": "library",
+    "require-dev": {
+        "phpspec/phpspec": "^3.2"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "franiglesias",
+            "email": "franiglesias@mac.com",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^5.5 || ^7.0",
+        "symfony/dependency-injection": "^3.2"
+    },
+    "autoload": {
+            "psr-4": {
+            "Milhojas\\Messaging\\": ["src/Milhojas/Messaging"]
+        }
+    }
+}
