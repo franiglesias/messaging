@@ -33,15 +33,19 @@ class DispatchEventsWorker extends MessageWorker
 
     /**
      * Dispatches events collected in EventRecorder.
+     * Clones and flushes the current recorder and uses a temp recorder to dispatch events
+     * This avoid an infinite loop condition.
      *
-     * @param Command $command
+     * @param Message $command
      */
     public function execute(Message $message)
     {
-        foreach ($this->recorder as $event) {
+        $events = clone $this->recorder;
+        $this->recorder->flush();
+        foreach ($events as $event) {
             $this->eventBus->dispatch($event);
         }
-        $this->recorder->flush();
+        $events->flush();
     }
 
     /**
