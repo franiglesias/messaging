@@ -5,7 +5,6 @@ namespace spec\Milhojas\Messaging\EventBus\Loader;
 use Milhojas\Messaging\EventBus\Listener;
 use Milhojas\Messaging\EventBus\Event;
 use Milhojas\Messaging\EventBus\Loader\ListenerLoader;
-use Milhojas\Messaging\Shared\Exception\InvalidLoaderKey;
 use PhpSpec\ObjectBehavior;
 
 class ListenerLoaderSpec extends ObjectBehavior
@@ -27,8 +26,8 @@ class ListenerLoaderSpec extends ObjectBehavior
         $this->get('some.event')->shouldBe([$listener1, $listener2, $listener3]);
     }
 
-    public function it_throws_exception_if_it_can_not_manage_event()
+    public function it_silently_returns_empty_array_if_it_can_not_manage_event()
     {
-        $this->shouldThrow(InvalidLoaderKey::class)->during('get', ['unmanaged.event']);
+        $this->get('some.event')->shouldBe([]);
     }
 }

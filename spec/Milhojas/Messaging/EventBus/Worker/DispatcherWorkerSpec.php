@@ -37,4 +37,12 @@ class DispatcherWorkerSpec extends ObjectBehavior
         $listener2->handle($event)->shouldBeCalled();
         $this->work($event);
     }
+
+    public function it_ignores_events_without_handlers(Event $event, Listener $listener, $loader)
+    {
+        $event->getName()->shouldBeCalled()->willReturn('event');
+        $loader->get('event')->shouldBeCalled()->willReturn([]);
+        $listener->handle($event)->shouldNotBeCalled();
+        $this->work($event);
+    }
 }
