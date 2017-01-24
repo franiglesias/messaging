@@ -40,7 +40,7 @@ class ExecuteWorker extends MessageWorker
     /**
      * Execute the needed handler and pass the comnand to the next Worker.
      *
-     * @param Command $command
+     * @param Message $command
      */
     public function execute(Message $command)
     {
