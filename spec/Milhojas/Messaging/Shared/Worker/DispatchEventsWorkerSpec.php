@@ -30,9 +30,8 @@ class DispatchEventsWorkerSpec extends ObjectBehavior
 
     public function it_dispatches_events($eventBus, $recorder, Event $event1, Event $event2, Message $message)
     {
-        $recorder->getIterator()->shouldBeCalled()->willReturn(new \ArrayIterator([$event1->getWrappedObject(), $event2->getWrappedObject()]));
+        $recorder->shift()->shouldBeCalled(3)->willReturn($event1, $event2, null);
         $eventBus->dispatch(Argument::type(Event::class))->shouldBeCalled(2);
-        $recorder->flush()->shouldBeCalled();
         $this->work($message);
     }
 }
