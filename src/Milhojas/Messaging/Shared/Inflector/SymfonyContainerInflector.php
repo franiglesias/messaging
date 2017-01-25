@@ -15,17 +15,73 @@ namespace Milhojas\Messaging\Shared\Inflector;
  */
 class SymfonyContainerInflector implements Inflector
 {
-    public function inflect($className)
+    public function inflect($fqcn)
     {
-        $parts = explode('\\', $className);
-        $class = preg_replace('/(?<=.)[A-Z]/', '_$0', end($parts));
-        $folder = prev($parts);
-        while (!in_array($folder,  ['Query', 'Command', 'Event'])) {
-            $class = $folder.'.'.$class;
-            $folder = prev($parts);
-        }
-        $context = prev($parts);
+        $split = $this->splitLastDot($this->normalizeName($fqcn));
 
-        return strtolower(sprintf('%s.%s.handler', $context, $class));
+        list($before, $after) = preg_split('/(query|command|event)/', strtolower($split['left']));
+
+        return sprintf('%s.%s.handler', $this->computeContext($before), $this->computeClassName($split, $after));
+    }
+
+    /**
+     * @param string $split
+     * @param string $after
+     *
+     * @return string
+     */
+    public function computeClassName($split, $after)
+    {
+        $className = $this->toUnderscore($split['right']);
+        if ($after) {
+            $className = trim($after, '.').'.'.$className;
+        }
+
+        return $className;
+    }
+
+    /**
+     * @param string $before
+     *
+     * @return string
+     */
+    public function computeContext($before)
+    {
+        $split = $this->splitLastDot($before);
+        if (!$split['right']) {
+            $split = $this->splitLastDot($split['left']);
+            if (!$split['right']) {
+                $split['right'] = $split['left'];
+            }
+        }
+
+        return $split['right'];
+    }
+
+    /**
+     * @param string $fqcn
+     *
+     * @return string
+     */
+    public function normalizeName($fqcn)
+    {
+        return trim(str_replace('\\', '.', $fqcn), '.');
+    }
+
+    private function splitLastDot($string)
+    {
+        preg_match('/^(.*)\.(.*)$/', $string, $matches);
+
+        $split = ['left' => trim($matches[1], '.'), 'right' => $matches[2]];
+        if (!$split['left']) {
+            $split['left'] = trim($string);
+        }
+
+        return $split;
+    }
+
+    private function toUnderscore($string)
+    {
+        return strtolower(preg_replace('/(?<=.)[A-Z]/', '_$0', $string));
     }
 }
