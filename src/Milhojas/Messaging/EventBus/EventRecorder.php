@@ -28,7 +28,7 @@ class EventRecorder implements \IteratorAggregate
      */
     public function recordThat(Event $event)
     {
-        $this->events[] = $event;
+        array_push($this->events, $event);
     }
 
     /**
@@ -42,7 +42,10 @@ class EventRecorder implements \IteratorAggregate
             $this->recordThat($event);
         }
     }
-
+    public function shift()
+    {
+        return array_shift($this->events);
+    }
     /**
      * Retrieves a plain array of events.
      *
