@@ -22,12 +22,12 @@
         "symfony/dependency-injection": "^3.2"
     },
     "autoload": {
-            "psr-4": {
+        "psr-4": {
             "Milhojas\\Messaging\\": ["src/Milhojas/Messaging"]
         }
     },
     "autoload-dev": {
-            "psr-4": {
+        "psr-4": {
             "Test\\Messaging\\": ["test/Milhojas/Messaging"]
         }
     }

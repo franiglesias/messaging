@@ -18,10 +18,12 @@ class SymfonyContainerInflector implements Inflector
     public function inflect($fqcn)
     {
         $split = $this->splitLastDot($this->normalizeName($fqcn));
+        $parts = preg_split('/(query|command|event)/', strtolower($split['left']));
+        if (!isset($parts[1])) {
+            $parts[1] = '';
+        }
 
-        list($before, $after) = preg_split('/(query|command|event)/', strtolower($split['left']));
-
-        return sprintf('%s.%s.handler', $this->computeContext($before), $this->computeClassName($split, $after));
+        return sprintf('%s.%s.handler', $this->computeContext($parts[0]), $this->computeClassName($split, $parts[1]));
     }
 
     /**
@@ -70,6 +72,9 @@ class SymfonyContainerInflector implements Inflector
 
     private function splitLastDot($string)
     {
+        if (strpos($string, '.') === false) {
+            return ['left' => $string, 'right' => ''];
+        }
         preg_match('/^(.*)\.(.*)$/', $string, $matches);
 
         $split = ['left' => trim($matches[1], '.'), 'right' => $matches[2]];

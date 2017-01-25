@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Messaging\Inflector;
+namespace Test\Messaging\Shared\Inflector;
 
 use PHPUnit\Framework\TestCase;
 use Milhojas\Messaging\Shared\Inflector\SymfonyContainerInflector;
