@@ -3,6 +3,7 @@
 namespace Milhojas\Messaging\Shared\Worker;
 
 use Milhojas\Messaging\Shared\Message;
+use Milhojas\Messaging\Shared\Exception\WorkerInstancePreviouslyUsed;
 
 /**
  * A message Worker does something with the Message or about it
@@ -53,6 +54,9 @@ abstract class MessageWorker implements Worker
      */
     public function chain(MessageWorker $next)
     {
+        if ($next->hasAnotherWorkerChained()) {
+            throw new WorkerInstancePreviouslyUsed(sprintf('Worker instance of %s has been chained to another bus.', get_class($next)));
+        }
         if ($this->isTheLastWorkerInChain()) {
             $this->next = $next;
 
@@ -69,6 +73,13 @@ abstract class MessageWorker implements Worker
         return !$this->next;
     }
 
+    /**
+     * @return bool true if has another worker chained
+     */
+    public function hasAnotherWorkerChained()
+    {
+        return !empty($this->next);
+    }
     /**
      * Pass the command to the next Worker in the chain.
      *

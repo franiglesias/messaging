@@ -3,7 +3,6 @@
 namespace Milhojas\Messaging\EventBus\Worker;
 
 use Milhojas\Messaging\EventBus\Loader\ListenerLoader;
-use Milhojas\Messaging\Shared\Exception\InvalidLoaderKey;
 use Milhojas\Messaging\Shared\Worker\MessageWorker;
 use Milhojas\Messaging\Shared\Message;
 use Milhojas\Messaging\EventBus\Event;
@@ -27,10 +26,6 @@ class DispatcherWorker extends MessageWorker
 
     public function getListeners(Event $event)
     {
-        try {
-            return $this->loader->get($event->getName());
-        } catch (InvalidLoaderKey $e) {
-            return [];
-        }
+        return $this->loader->get($event->getName());
     }
 }
