@@ -12,7 +12,7 @@ class ConcreteHandler implements CommandHandler
     /**
      * {@inheritdoc}
      */
-    public function handle(ConcreteCommand $command)
+    public function handle(Command $command)
     {
         $this->spy = $command->getData();
     }
