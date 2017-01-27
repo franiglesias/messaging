@@ -3,7 +3,7 @@
 namespace Milhojas\Messaging\Shared\Pipeline;
 
 use Milhojas\Messaging\Shared\Message;
-use Milhojas\Messaging\Shared\Worker\MessageWorker;
+use Milhojas\Messaging\Shared\Worker\Worker;
 use Milhojas\Messaging\Shared\Exception\EmptyPipeline;
 
 /**
@@ -12,38 +12,44 @@ use Milhojas\Messaging\Shared\Exception\EmptyPipeline;
  */
 class WorkerPipeline implements Pipeline
 {
-    private $pipeline;
-
     /**
-     * Builds a CoR with the array of workers.
+     * Stores a queue of workers.
      *
-     * @param MessageWorker[] $workers
+     * @var \SplQueue
+     */
+    private $queue;
+    /**
+     * Result returned from a worker.
+     *
+     * @var mixed
+     */
+    private $result = null;
+    /**
+     * Builds a queue with the array of workers.
+     *
+     * @param Worker[] $workers
      */
     public function __construct(array $workers)
     {
         if (!$workers) {
             throw new EmptyPipeline('A pipeline needs MessageWorkers to work.');
         }
-        $this->pipeline = $this->build($workers);
+        $this->queue = new \SplQueue();
+        while ($workers) {
+            $this->enqueue(array_shift($workers));
+        }
     }
 
     /**
-     * Builds the responsibility chain.
+     * Add an element to the Worker chain.
      *
-     * @param MessageWorker[] $workers
-     *
-     * @return MessageWorker the chain
+     * @param Worker $worker
      *
      * @author Francisco Iglesias Gómez
      */
-    protected function build($workers)
+    protected function enqueue(Worker $worker)
     {
-        $chain = array_shift($workers);
-        while ($workers) {
-            $chain->chain(array_shift($workers));
-        }
-
-        return $chain;
+        $this->queue->enqueue($worker);
     }
 
     /**
@@ -51,6 +57,13 @@ class WorkerPipeline implements Pipeline
      */
     public function work(Message $message)
     {
-        return $this->pipeline->work($message);
+        foreach ($this->queue as $worker) {
+            $result = $worker->work($message);
+            if ($result && !$this->result) {
+                $this->result = $result;
+            }
+        }
+
+        return $this->result;
     }
 }

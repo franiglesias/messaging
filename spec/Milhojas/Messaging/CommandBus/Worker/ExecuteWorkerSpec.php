@@ -7,6 +7,7 @@ use Milhojas\Messaging\CommandBus\CommandHandler;
 use Milhojas\Messaging\Shared\Loader\Loader;
 use Milhojas\Messaging\Shared\Inflector\Inflector;
 use Milhojas\Messaging\CommandBus\Worker\ExecuteWorker;
+use Milhojas\Messaging\Shared\Worker\Worker;
 use PhpSpec\ObjectBehavior;
 
 class ExecuteWorkerSpec extends ObjectBehavior
@@ -19,6 +20,7 @@ class ExecuteWorkerSpec extends ObjectBehavior
     public function it_is_initializable()
     {
         $this->shouldHaveType(ExecuteWorker::class);
+        $this->shouldImplement(Worker::class);
     }
 
     public function it_can_execute_command_calling_the_right_handler(Command $command, CommandHandler $handler, $loader, $inflector)

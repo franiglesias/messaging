@@ -5,15 +5,14 @@ namespace spec\Milhojas\Messaging\Shared\Pipeline;
 use Milhojas\Messaging\Shared\Message;
 use Milhojas\Messaging\Shared\Pipeline\Pipeline;
 use Milhojas\Messaging\Shared\Pipeline\WorkerPipeline;
-use Milhojas\Messaging\Shared\Worker\MessageWorker;
+use Milhojas\Messaging\Shared\Worker\Worker;
 use Milhojas\Messaging\Shared\Exception\EmptyPipeline;
 use PhpSpec\ObjectBehavior;
 
 class WorkerPipelineSpec extends ObjectBehavior
 {
-    public function let(MessageWorker $worker1, MessageWorker $worker2)
+    public function let(Worker $worker1, Worker $worker2)
     {
-        $worker1->chain($worker2)->shouldBeCalled();
         $this->beConstructedWith([$worker1, $worker2]);
     }
     public function it_is_initializable()
@@ -34,10 +33,16 @@ class WorkerPipelineSpec extends ObjectBehavior
         $this->work($message)->shouldBe('Response');
     }
 
-    public function it_throws_exception_if_no_workers($worker1, $worker2)
+    public function it_throws_exception_if_no_workers()
     {
-        $worker1->chain($worker2)->shouldNotBeCalled();
         $this->beConstructedWith([]);
         $this->shouldThrow(EmptyPipeline::class)->duringInstantiation();
+    }
+
+    public function it_passes_message_to_all_workers(Message $message, Worker $worker1, Worker $worker2)
+    {
+        $worker1->work($message)->shouldBeCalled();
+        $worker2->work($message)->shouldBeCalled();
+        $this->work($message);
     }
 }

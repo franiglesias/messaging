@@ -6,7 +6,6 @@ use Milhojas\Messaging\EventBus\Event;
 use Milhojas\Messaging\EventBus\EventBus;
 use Milhojas\Messaging\EventBus\EventRecorder;
 use Milhojas\Messaging\Shared\Message;
-use Milhojas\Messaging\Shared\Worker\MessageWorker;
 use Milhojas\Messaging\Shared\Worker\DispatchEventsWorker;
 use PHPUnit\Framework\TestCase;
 
@@ -29,15 +28,6 @@ class DispatchEventsWorkerTest extends TestCase
         $message = $this->prophesize(Message::class);
         $this->recorder->shift()->shouldBeCalled(4)->willReturn($event->reveal(), $event->reveal(), $event->reveal(), null);
         $this->bus->dispatch($event->reveal())->shouldBeCalled(3);
-        $this->worker->execute($message->reveal());
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function test_it_disallows_chain_another_worker()
-    {
-        $worker = $this->prophesize(MessageWorker::class);
-        $this->worker->chain($worker->reveal());
+        $this->worker->work($message->reveal());
     }
 }

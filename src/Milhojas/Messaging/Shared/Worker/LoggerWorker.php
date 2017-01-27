@@ -5,7 +5,7 @@ namespace Milhojas\Messaging\Shared\Worker;
 use Milhojas\Messaging\Shared\Message;
 use Psr\Log\LoggerInterface;
 
-class LoggerWorker extends MessageWorker
+class LoggerWorker implements Worker
 {
     private $logger;
 
@@ -14,7 +14,7 @@ class LoggerWorker extends MessageWorker
         $this->logger = $logger;
     }
 
-    public function execute(Message $message)
+    public function work(Message $message)
     {
         $name = $this->getName(get_class($message));
         $this->logger->notice(sprintf('Message %s has been dispatched.', $name));

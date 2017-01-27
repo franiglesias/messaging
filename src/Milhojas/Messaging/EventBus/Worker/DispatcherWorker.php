@@ -3,11 +3,11 @@
 namespace Milhojas\Messaging\EventBus\Worker;
 
 use Milhojas\Messaging\EventBus\Loader\ListenerLoader;
-use Milhojas\Messaging\Shared\Worker\MessageWorker;
+use Milhojas\Messaging\Shared\Worker\Worker;
 use Milhojas\Messaging\Shared\Message;
 use Milhojas\Messaging\EventBus\Event;
 
-class DispatcherWorker extends MessageWorker
+class DispatcherWorker implements Worker
 {
     private $loader;
 
@@ -16,7 +16,7 @@ class DispatcherWorker extends MessageWorker
         $this->loader = $loader;
     }
 
-    public function execute(Message $event)
+    public function work(Message $event)
     {
         $listeners = $this->getListeners($event);
         foreach ($listeners as $listener) {

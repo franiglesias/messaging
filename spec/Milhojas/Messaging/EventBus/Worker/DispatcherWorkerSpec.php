@@ -6,7 +6,7 @@ use Milhojas\Messaging\EventBus\Loader\ListenerLoader;
 use Milhojas\Messaging\EventBus\Worker\DispatcherWorker;
 use Milhojas\Messaging\EventBus\Event;
 use Milhojas\Messaging\EventBus\Listener;
-use Milhojas\Messaging\Shared\Worker\MessageWorker;
+use Milhojas\Messaging\Shared\Worker\Worker;
 use PhpSpec\ObjectBehavior;
 
 class DispatcherWorkerSpec extends ObjectBehavior
@@ -18,7 +18,7 @@ class DispatcherWorkerSpec extends ObjectBehavior
     public function it_is_initializable()
     {
         $this->shouldHaveType(DispatcherWorker::class);
-        $this->shouldBeAnInstanceOf(MessageWorker::class);
+        $this->shouldImplement(Worker::class);
     }
 
     public function it_dispatches_event_to_one_handler(Event $event, Listener $listener, $loader)

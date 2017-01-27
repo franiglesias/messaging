@@ -4,11 +4,11 @@ namespace Milhojas\Messaging\QueryBus\Worker;
 
 use Milhojas\Messaging\QueryBus\Query;
 use Milhojas\Messaging\Shared\Message;
-use Milhojas\Messaging\Shared\Worker\MessageWorker;
+use Milhojas\Messaging\Shared\Worker\Worker;
 use Milhojas\Messaging\Shared\Loader\Loader;
 use Milhojas\Messaging\Shared\Inflector\Inflector;
 
-class QueryWorker extends MessageWorker
+class QueryWorker implements Worker
 {
     /**
      * @var Loader Strategy to load classes
@@ -31,7 +31,7 @@ class QueryWorker extends MessageWorker
     /**
      * {@inheritdoc}
      */
-    public function execute(Message $query)
+    public function work(Message $query)
     {
         $handler = $this->getHandler($query);
 

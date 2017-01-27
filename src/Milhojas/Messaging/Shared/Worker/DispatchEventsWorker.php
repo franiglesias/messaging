@@ -10,7 +10,7 @@ use Milhojas\Messaging\EventBus\EventRecorder;
  * Collects events and dispatches them
  * Must be at the end of the chain.
  */
-class DispatchEventsWorker extends MessageWorker
+class DispatchEventsWorker implements Worker
 {
     /**
      * Needed to dispatch events.
@@ -38,7 +38,7 @@ class DispatchEventsWorker extends MessageWorker
      *
      * @param Message $message
      */
-    public function execute(Message $message)
+    public function work(Message $message)
     {
         while ($event = $this->recorder->shift()) {
             $this->eventBus->dispatch($event);
@@ -48,11 +48,11 @@ class DispatchEventsWorker extends MessageWorker
     /**
      * Forces this Worker to be the last in the workers ChainCache.
      *
-     * @param MessageWorker $worker a worker to chain after this Worker
+     * @param Worker $worker a worker to chain after this Worker
      *
      * @throws \InvalidArgumentException [description]
      */
-    public function chain(MessageWorker $worker)
+    public function chain(Worker $worker)
     {
         throw new \InvalidArgumentException('DispatchEventsWorker should be the last worker in the chain');
     }
