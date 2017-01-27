@@ -44,16 +44,4 @@ class DispatchEventsWorker implements Worker
             $this->eventBus->dispatch($event);
         }
     }
-
-    /**
-     * Forces this Worker to be the last in the workers ChainCache.
-     *
-     * @param Worker $worker a worker to chain after this Worker
-     *
-     * @throws \InvalidArgumentException [description]
-     */
-    public function chain(Worker $worker)
-    {
-        throw new \InvalidArgumentException('DispatchEventsWorker should be the last worker in the chain');
-    }
 }
