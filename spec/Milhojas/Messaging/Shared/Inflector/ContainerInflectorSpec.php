@@ -3,14 +3,14 @@
 namespace spec\Milhojas\Messaging\Shared\Inflector;
 
 use Milhojas\Messaging\Shared\Inflector\Inflector;
-use Milhojas\Messaging\Shared\Inflector\SymfonyContainerInflector;
+use Milhojas\Messaging\Shared\Inflector\ContainerInflector;
 use PhpSpec\ObjectBehavior;
 
-class SymfonyContainerInflectorSpec extends ObjectBehavior
+class ContainerInflectorSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType(SymfonyContainerInflector::class);
+        $this->shouldHaveType(ContainerInflector::class);
         $this->shouldImplement(Inflector::class);
     }
 

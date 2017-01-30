@@ -13,7 +13,7 @@ namespace Milhojas\Messaging\Shared\Inflector;
  * Given: \Vendor\Layer\Context\Folder\Subfolder\ClassName
  * Then:  context.subfolder.class_name.handler
  */
-class SymfonyContainerInflector implements Inflector
+class ContainerInflector implements Inflector
 {
     public function inflect($fqcn)
     {

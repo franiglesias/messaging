@@ -3,15 +3,15 @@
 namespace Test\Messaging\Shared\Inflector;
 
 use PHPUnit\Framework\TestCase;
-use Milhojas\Messaging\Shared\Inflector\SymfonyContainerInflector;
+use Milhojas\Messaging\Shared\Inflector\ContainerInflector;
 
-class SymfonyContainerInflectorTest extends TestCase
+class ContainerInflectorTest extends TestCase
 {
     private $inflector;
 
     public function setUp()
     {
-        $this->inflector = new SymfonyContainerInflector();
+        $this->inflector = new ContainerInflector();
     }
 
     public function test_it_can_manage_vendor_class()
