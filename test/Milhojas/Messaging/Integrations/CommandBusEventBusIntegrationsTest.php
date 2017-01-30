@@ -10,9 +10,9 @@ use Milhojas\Messaging\EventBus\Listener;
 use Milhojas\Messaging\EventBus\EventBus;
 use Milhojas\Messaging\EventBus\Event;
 use Milhojas\Messaging\EventBus\EventRecorder;
-use Milhojas\Messaging\EventBus\Loader\ListenerLoader;
 use Milhojas\Messaging\EventBus\Worker\DispatcherWorker;
 use Milhojas\Messaging\Shared\Inflector\Inflector;
+use Milhojas\Messaging\EventBus\Inflector\ListenerInflector;
 use Milhojas\Messaging\Shared\Loader\TestLoader;
 use Milhojas\Messaging\Shared\Pipeline\WorkerPipeline;
 use Milhojas\Messaging\Shared\Worker\LoggerWorker;
@@ -69,10 +69,13 @@ class CommandBusEventBusIntegrationsTest extends TestCase
     private function setUpEventBus()
     {
         $this->listener = new EventListenerForTest();
-        $loader = new ListenerLoader();
-        $loader->addListener('test.event', $this->listener);
+        $inflector = new ListenerInflector();
+        $inflector->addListener('test.event', 'test.event.listener');
+
+        $this->loader->add('test.event.listener', $this->listener);
+
         $eventBusPipeline = new WorkerPipeline([
-            new DispatcherWorker($loader),
+            new DispatcherWorker($inflector, $this->loader),
             $this->loggerWorker,
         ]);
         $this->eventBus = new EventBus($eventBusPipeline);
