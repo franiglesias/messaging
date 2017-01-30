@@ -3,12 +3,14 @@
 namespace Milhojas\Messaging\Shared\Loader;
 
 /**
- * Adapter interface to load handler classes.
+ * Interface to load handler classes.
  */
 interface Loader
 {
     /**
-     * @param string $className identifier for the class to load. It could be the class name or the label ina container
+     * Loads a class given a key previously registered in a container.
+     *
+     * @param string $key identifier for the class to load. It could be the class name or the label ina container
      */
-    public function get($className);
+    public function get($key);
 }
