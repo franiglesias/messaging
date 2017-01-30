@@ -49,12 +49,14 @@ class CommandBusEventBusIntegrationsTest extends TestCase
         $eventBus,
         $commandBus,
         $loader,
-        $inflector
+        $inflector,
+        $loggerWorker
         ;
 
     public function setUp()
     {
         $this->logger = $this->prophesize(LoggerInterface::class);
+        $this->loggerWorker = new LoggerWorker($this->logger->reveal());
 
         $this->loader = new TestLoader();
         $this->inflector = new TestInflector();
@@ -71,7 +73,7 @@ class CommandBusEventBusIntegrationsTest extends TestCase
         $loader->addListener('test.event', $this->listener);
         $eventBusPipeline = new WorkerPipeline([
             new DispatcherWorker($loader),
-            new LoggerWorker($this->logger->reveal()),
+            $this->loggerWorker,
         ]);
         $this->eventBus = new EventBus($eventBusPipeline);
     }
@@ -85,7 +87,7 @@ class CommandBusEventBusIntegrationsTest extends TestCase
         $this->loader->add(get_class($this->broadcast), $this->broadcastHandler);
         $commandBusPipeline = new WorkerPipeline([
             new ExecuteWorker($this->loader, $this->inflector),
-            new LoggerWorker($this->logger->reveal()),
+            $this->loggerWorker,
             new DispatchEventsWorker($this->eventBus, $this->recorder),
         ]);
         $this->commandBus = new CommandBus($commandBusPipeline);
