@@ -14,7 +14,7 @@ class DispatcherWorkerSpec extends ObjectBehavior
 {
     public function let(Inflector $inflector, Loader $loader)
     {
-        $this->beConstructedWith($inflector, $loader);
+        $this->beConstructedWith($loader, $inflector);
     }
     public function it_is_initializable()
     {

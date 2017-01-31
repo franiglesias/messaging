@@ -12,7 +12,7 @@ class DispatcherWorker implements Worker
     private $inflector;
     private $loader;
 
-    public function __construct(Inflector $inflector, Loader $loader)
+    public function __construct(Loader $loader, Inflector $inflector)
     {
         $this->inflector = $inflector;
         $this->loader = $loader;

@@ -28,4 +28,10 @@ class ContainerInflectorSpec extends ObjectBehavior
     {
         $this->inflect('\\Milhojas\\Application\\Context\\Query\\Subfolder\\Subsubfolder\\QueryClass')->shouldBe('context.subfolder.subsubfolder.query_class.handler');
     }
+
+    public function it_can_inflect_a_concrete_command()
+    {
+        $this->inflect('\\Milhojas\\Application\\Management\\Command\\StartPayroll')->shouldBe('management.start_payroll.handler');
+        $this->inflect('Milhojas\\Application\\Management\\Command\\StartPayroll')->shouldBe('management.start_payroll.handler');
+    }
 }
