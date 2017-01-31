@@ -4,7 +4,6 @@ namespace spec\Milhojas\Messaging\EventBus\Inflector;
 
 use Milhojas\Messaging\EventBus\Inflector\ListenerInflector;
 use Milhojas\Messaging\Shared\Inflector\Inflector;
-use Milhojas\Messaging\Shared\Exception\InvalidLoaderKey;
 use PhpSpec\ObjectBehavior;
 
 class ListenerInflectorSpec extends ObjectBehavior
@@ -31,8 +30,8 @@ class ListenerInflectorSpec extends ObjectBehavior
         $this->inflect('event.test')->shouldBe($listeners);
     }
 
-    public function it_throws_exception_when_asked_for_non_existent_key()
+    public function it_return_empty_array_if_event_is_not_managed()
     {
-        $this->shouldThrow(InvalidLoaderKey::class)->during('inflect', ['false.event.test']);
+        $this->inflect('false.event.test')->shouldBe([]);
     }
 }

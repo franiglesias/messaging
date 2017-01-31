@@ -3,7 +3,6 @@
 namespace Milhojas\Messaging\EventBus\Inflector;
 
 use Milhojas\Messaging\Shared\Inflector\Inflector;
-use Milhojas\Messaging\Shared\Exception\InvalidLoaderKey;
 
 class ListenerInflector implements Inflector
 {
@@ -13,7 +12,9 @@ class ListenerInflector implements Inflector
      */
     public function inflect($eventKey)
     {
-        $this->has($eventKey);
+        if (!$this->has($eventKey)) {
+            return [];
+        }
 
         return $this->map[$eventKey];
     }
@@ -25,9 +26,7 @@ class ListenerInflector implements Inflector
 
     private function has($eventKey)
     {
-        if (!isset($this->map[$eventKey])) {
-            throw new InvalidLoaderKey(sprintf('There are no Listener(s) to handle %s event', $eventKey));
-        }
+        return isset($this->map[$eventKey]);
     }
 
     public function addListeners($eventKey, array $listeners)
