@@ -75,7 +75,7 @@ class CommandBusEventBusIntegrationsTest extends TestCase
         $this->loader->add('test.event.listener', $this->listener);
 
         $eventBusPipeline = new WorkerPipeline([
-            new DispatcherWorker($inflector, $this->loader),
+            new DispatcherWorker($this->loader, $inflector),
             $this->loggerWorker,
         ]);
         $this->eventBus = new EventBus($eventBusPipeline);

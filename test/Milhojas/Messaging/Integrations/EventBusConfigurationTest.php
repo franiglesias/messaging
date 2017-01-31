@@ -32,7 +32,7 @@ class EventBusConfigurationTest extends TestCase
         $inflector = $this->getInflector();
         $this->listener = new EventListenerForTest();
         $loader = $this->getLoader();
-        $this->bus = new EventBus(new DispatcherWorker($inflector, $loader));
+        $this->bus = new EventBus(new DispatcherWorker($loader, $inflector));
     }
 
     /**
