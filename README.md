@@ -173,6 +173,12 @@ The complete code should look like this:
     $executeWorker = new ExecuteWorker($inflector, $loader);
     $commandBus = new CommandBus($executeWorker);
 ```
+#### Command and Command Handler
+
+To give a meaning to the life of a CommandBus you need some Command and Command Handlers. They are pretty easy to write.
+
+The Command pattern is a classic one to encapsulate an imperative with the data needed to execute it. Traditionally, the Command pattern was implemented using a unique class with an execute method. However, current approaches consist of two classes, a simple data object and a separate handler, applying the Single Responsibility Principle. This brings several advantages. For example, is far easier to inject the dependencies that the handler could need, and you only need to pass one parameter (the command) to the handler execute method, so all handle implement a unique interface.
+
 
 
 More Documentation soon...
